@@ -9,29 +9,34 @@
 
 -include_lib("ct_msg/include/ct_msg_types.hrl").
 
--callback handle_hello_message(Hello, Gate)
+-callback handle_hello_message(Hello, PeerAtGate)
 -> ok
        when Hello :: ct_msg_hello(),
-            Gate :: pid().
+            PeerAtGate :: pid().
 
--callback handle_established_message(Type, Message, Session, Gate)
+-callback handle_authenticate_message(Authenticate, PeerAtGate)
+-> ok
+       when Authenticate :: ct_msg_authenticate(),
+            PeerAtGate :: pid().
+
+-callback handle_established_message(Type, Message, SessionData, PeerAtGate)
 -> ok
        when Type :: ct_msg_type(),
             Message :: ct_msg_established(),
-            Session :: any(),
-            Gate :: pid().
+            SessionData :: any(),
+            PeerAtGate :: pid().
 
--callback handle_session_closed_message(Session, Gate)
+-callback handle_session_closed_message(SessionData, PeerAtGate)
 -> ok
-       when Session :: any(),
-            Gate :: pid().
+       when SessionData :: any(),
+            PeerAtGate :: pid().
 
 handle_hello(Hello, RouterIf) ->
     RouterIf:handle_hello_message(Hello, self()).
 
-handle_established(Message, Session, RouterIf) ->
+handle_established(Message, SessionData, RouterIf) ->
     Type = ct_msg:get_type(Message),
-    RouterIf:handle_established_message(Type, Message, Session, self()).
+    RouterIf:handle_established_message(Type, Message, SessionData, self()).
 
-handle_session_closed(Session, RouterIf) ->
-    RouterIf:handle_session_closed(Session, self()).
+handle_session_closed(SessionData, RouterIf) ->
+    RouterIf:handle_session_closed(SessionData, self()).
