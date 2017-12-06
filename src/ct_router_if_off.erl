@@ -6,16 +6,20 @@
 
 -export([
          handle_hello_message/2,
+         handle_authenticate_message/2,
          handle_established_message/4,
          handle_session_closed_message/2
         ]).
 
-handle_hello_message(_Hello, Gate) ->
-    Gate ! {to_peer, ?ABORT(#{}, no_such_realm)},
+handle_hello_message(_Hello, PeerAtGate) ->
+    PeerAtGate ! {to_peer, ?ABORT(#{}, no_such_realm)},
     ok.
 
-handle_established_message(_Type, _Message, _Session, _Gate) ->
+handle_authenticate_message(_Authenticate, _PeerAtGate) ->
     ok.
 
-handle_session_closed_message(_Session, _Gate) ->
+handle_established_message(_Type, _Message, _Session, _PeerAtGate) ->
+    ok.
+
+handle_session_closed_message(_Session, _PeerAtGate) ->
     ok.

@@ -2,6 +2,7 @@
 
 -export([
          handle_hello/2,
+         handle_authenticate/2,
          handle_established/3,
          handle_session_closed/2
         ]).
@@ -31,8 +32,12 @@
        when SessionData :: any(),
             PeerAtGate :: pid().
 
+
 handle_hello(Hello, RouterIf) ->
     RouterIf:handle_hello_message(Hello, self()).
+
+handle_authenticate(Authenticate, RouterIf) ->
+    RouterIf:handle_authenticate_message(Authenticate, self()).
 
 handle_established(Message, SessionData, RouterIf) ->
     Type = ct_msg:get_type(Message),
