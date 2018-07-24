@@ -1,7 +1,7 @@
 -module(ct_router_if).
 
 -export([
-         handle_hello/2,
+         handle_hello/3,
          handle_authenticate/2,
          handle_established/3,
          handle_session_closed/2
@@ -10,10 +10,11 @@
 
 -include_lib("ct_msg/include/ct_msg_types.hrl").
 
--callback handle_hello_message(Hello, PeerAtGate)
+-callback handle_hello_message(Hello, PeerAtGate, Transport)
 -> ok
        when Hello :: ct_msg_hello(),
-            PeerAtGate :: pid().
+            PeerAtGate :: pid(),
+            Transport :: map().
 
 -callback handle_authenticate_message(Authenticate, PeerAtGate)
 -> ok
@@ -33,8 +34,8 @@
             PeerAtGate :: pid().
 
 
-handle_hello(Hello, RouterIf) ->
-    RouterIf:handle_hello_message(Hello, self()).
+handle_hello(Hello, RouterIf, Transport) ->
+    RouterIf:handle_hello_message(Hello, self(), Transport).
 
 handle_authenticate(Authenticate, RouterIf) ->
     RouterIf:handle_authenticate_message(Authenticate, self()).
