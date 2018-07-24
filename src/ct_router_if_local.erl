@@ -4,14 +4,14 @@
 
 
 -export([
-         handle_hello_message/2,
+         handle_hello_message/3,
          handle_authenticate_message/2,
          handle_established_message/4,
          handle_session_closed/2
         ]).
 
-handle_hello_message(Hello, PeerAtGate) ->
-    ct_router:handle_hello(Hello, PeerAtGate).
+handle_hello_message(Hello, PeerAtGate, Transport) ->
+    ct_router:handle_hello(Hello, PeerAtGate, Transport).
 
 handle_authenticate_message(Authenticate, PeerAtGate) ->
     ct_router:handle_authenticate(Authenticate, PeerAtGate).
