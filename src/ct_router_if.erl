@@ -28,7 +28,7 @@
             SessionData :: any(),
             PeerAtGate :: pid().
 
--callback handle_session_closed_message(SessionData, PeerAtGate)
+-callback handle_session_closed(SessionData, PeerAtGate)
 -> ok
        when SessionData :: any(),
             PeerAtGate :: pid().
